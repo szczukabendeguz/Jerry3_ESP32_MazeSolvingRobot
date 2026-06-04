@@ -1,29 +1,32 @@
-# Jerry 3.0 – ESP32 Maze-Solving Robot
+# Jerry 3.0 - ESP32 Maze-Solving Robot
 
-An autonomous maze-solving robot built for the **"Mobile Robots in the Maze"** competition at **Óbuda University, Hungary**. This third-generation robot features a major upgrade from Arduino to ESP32, enabling WiFi-based real-time tuning, advanced sensor fusion, and parallel processing.
+An autonomous maze-solving robot built for the **Mobile Robots in the Maze** competition at **Obuda University, Hungary**. This third-generation robot started as an Arduino-based firmware and now runs on ESP32 with live tuning, improved sensor handling, and a modular codebase.
 
 For more detailed documentation and project context, please visit: [ArduinoCompetition](https://github.com/szczukabendeguz/ArduinoCompetition)
+For the current web tuning stack, see: [ESP32VariableTuner-public](https://github.com/szczukabendeguz/ESP32VariableTuner-public)
+Project details and documentation are also available at: [teamjerry.hu](https://teamjerry.hu)
 
 ## Tech Stack
 
 [![Tech Stack](https://skillicons.dev/icons?i=cpp,arduino,vscode)](https://skillicons.dev)
 
 **Hardware:** ESP32 WROOM-32 (Wemos D1 R32), MPU-6050, MFRC522 RFID, Sharp IR sensors, L298N motor driver  
-**Software:** PlatformIO, Arduino framework, AsyncWebServer, ArduinoJson, PID control, Kalman filtering
+**Software:** PlatformIO, Arduino framework, ESP32VariableTuner, ESPAsyncWebServer, AsyncTCP, ArduinoJson, PID control, Kalman filtering
 
 ---
 
 ## Project Goal
 
-Jerry 3.0 is a compact **16×16 cm autonomous robot** designed to navigate and solve mazes using wall-following algorithms, RFID-based navigation, and gyroscope-assisted turns. The robot leverages the ESP32's **240 MHz dual-core processor** and built-in WiFi to provide:
+Jerry 3.0 is a compact **16x16 cm autonomous robot** designed to navigate and solve mazes using wall-following algorithms, RFID-based navigation, and gyroscope-assisted turns. The robot leverages the ESP32's **240 MHz dual-core processor** and built-in WiFi to provide:
 
-- **Real-time web interface** for live sensor monitoring and PID tuning via WiFi (SoftAP mode)
+- **Live variable tuning** for PID and motion values via ESP32VariableTuner
 - **Kalman-filtered IR sensors** for accurate wall distance measurement
 - **RFID navigation** for directional guidance using maze tags
-- **Gyroscope-assisted motion control** for precise 90° turns
+- **Gyroscope-assisted motion control** for precise 90 degree turns
 - **Adaptive wall-following** that centers the robot between walls or follows a single wall
+- **Modular firmware** split into audio, motion, RFID, sensor, and tuner modules
 
-This project represents a significant evolution from our previous Arduino-based designs, with the ESP32's dual-core architecture enabling parallel sensor processing and web communication without performance bottlenecks.
+This project represents a significant evolution from our previous Arduino-based designs. The old monolithic custom web interface was replaced with ESP32VariableTuner, and the codebase was refactored to keep motion, sensing, audio, RFID, and tuning logic in separate files.
 
 ---
 
@@ -44,7 +47,7 @@ This project represents a significant evolution from our previous Arduino-based 
    ```
 
 2. **Open in PlatformIO:**
-   - Open the project folder in VS Code with PlatformIO extension installed
+   - Open the project folder in VS Code with the PlatformIO extension installed
    - PlatformIO will automatically install dependencies listed in `platformio.ini`
 
 3. **Upload to ESP32:**
@@ -57,16 +60,16 @@ This project represents a significant evolution from our previous Arduino-based 
    pio device monitor
    ```
 
-### Connecting to the Web Interface
+### Connecting to the Tuning Interface
 
-1. After uploading, the ESP32 will create a WiFi access point (SoftAP mode)
-2. Connect to the WiFi network: **SSID** and password will be displayed in serial monitor
+1. After uploading, the ESP32 creates a WiFi access point (SoftAP mode)
+2. Connect to the WiFi network: the **SSID** and password will be displayed in the serial monitor
 3. Open a browser and navigate to the IP address shown (typically `192.168.4.1`)
-4. Use the web interface to:
-   - View live sensor data (IR distances, gyroscope angles)
-   - Tune PID parameters in real-time
-   - Switch between profiles (sprint mode, precision mode)
-   - Start/stop the robot
+4. Use the ESP32VariableTuner UI to:
+   - View live variable values
+   - Tune PID parameters in real time
+   - Adjust motion limits and wall-following thresholds
+   - Monitor telemetry while the robot is running
 
 ---
 
@@ -84,10 +87,10 @@ This project represents a significant evolution from our previous Arduino-based 
   MFRC522 module (SPI) reads directional tags placed in the maze, providing navigation instructions (forward, left, right, stop, start, dead-end).
 
 - **Motion Control**  
-  Two DC motors with L298N driver provide tank-style movement. MPU-6050 gyroscope measures rotation during turns for accurate 90° movements.
+  Two DC motors with L298N driver provide tank-style movement. MPU-6050 gyroscope measures rotation during turns for accurate 90 degree movements.
 
-- **Web Interface**  
-  ESP32's built-in AsyncWebServer hosts a real-time dashboard for monitoring and tuning without reprogramming.
+- **Live Tuning Interface**  
+  ESP32VariableTuner hosts the current tuning dashboard and replaces the old custom web server.
 
 ### Wall-Following Algorithm
 
@@ -103,164 +106,176 @@ The adaptive wall-following logic handles three scenarios:
 
 No environment variables are required. Configuration is done through:
 
-- **PID parameters:** Tunable via web interface or in `src/main.cpp`
-- **Motor speeds:** Defined in `src/main.cpp` (min/max speeds, turn speeds)
-- **Sensor calibration:** IR sensor models and Kalman filter parameters in `src/main.cpp`
-- **WiFi credentials:** SoftAP SSID/password configured in `src/pid_webinterface.cpp`
+- **PID parameters:** Tunable via ESP32VariableTuner or in `src/main.cpp`
+- **Motor speeds:** Defined in `src/main.cpp` and used by the motion module
+- **Sensor calibration:** IR sensor models and Kalman filter parameters in `src/sensors.cpp`
+- **WiFi credentials:** SoftAP SSID/password configured in `src/main.cpp`
 
 ---
 
 ## Testing
 
-The project includes a web-based testing interface:
+The project includes a tuning and testing interface through ESP32VariableTuner:
 
 ```bash
-# Open test/test.html in a browser after connecting to the robot's WiFi
-# This provides a visual dashboard for sensor data and control
+# Connect to the robot's WiFi network
+# Open the tuner UI in a browser at the ESP32 IP address
 ```
 
 For hardware testing:
 
 1. Place the robot in a test maze
-2. Connect to the WiFi interface
+2. Connect to the WiFi tuning interface
 3. Monitor sensor readings and adjust PID parameters
-4. Use the web interface to start the maze-solving routine
+4. Use the live tuner to start the maze-solving routine
 
 ---
 
 ## What We Learned
 
-- **ESP32 vs Arduino:** The upgrade to ESP32 provided a massive performance boost, enabling more complex algorithms and real-time WiFi tuning
-- **Dual-core architecture:** Running sensor control on one core and web communication on the other eliminated performance bottlenecks
+- **ESP32 vs Arduino:** The upgrade to ESP32 provided a massive performance boost, enabling more complex algorithms and live tuning
+- **Modular architecture:** Splitting the firmware into separate files made the code easier to maintain and extend
 - **Kalman filtering:** Essential for stable IR sensor readings in a noisy environment
-- **Real-time tuning:** WiFi-based parameter adjustment saved countless hours during testing and competition preparation
+- **Live tuning:** ESP32VariableTuner saved time during testing and competition preparation
 
 ---
 
-# Jerry 3.0 – ESP32 Labirintus-megoldó Robot
+# Jerry 3.0 - ESP32 Labirintus-megoldo Robot
 
-Autonóm labirintus-megoldó robot, amelyet az **Óbudai Egyetem** **"Mobilrobotok a labirintusban"** versenyére építettünk. Ez a harmadik generációs robot jelentős frissítést kapott: Arduinoról ESP32-re váltottunk, ami lehetővé teszi a WiFi-alapú valós idejű hangolást, fejlett szenzorfúziót és párhuzamos feldolgozást.
+Autonom labirintus-megoldo robot, amelyet az **Obudai Egyetem** **"Mobilrobotok a labirintusban"** versenyere epitettunk. Ez a harmadik generacios robot Arduinorol ESP32-re valtott, es most mar ESP32VariableTuner-rel, jobb szenzorfeldolgozassal es modularis kodszerkezettel fut.
 
-A projekt részletesebb kifejtése itt érhető el: [ArduinoCompetition](https://github.com/szczukabendeguz/ArduinoCompetition)
+A projekt regebbi versenykontextusa itt erheto el: [ArduinoCompetition](https://github.com/szczukabendeguz/ArduinoCompetition)
+A jelenlegi live tuning megoldas: [ESP32VariableTuner-public](https://github.com/szczukabendeguz/ESP32VariableTuner-public)
+A projektről részletek és a dokumentáció itt érhető el: [teamjerry.hu](https://teamjerry.hu)
 
 ## Tech Stack
 
 [![Tech Stack](https://skillicons.dev/icons?i=cpp,arduino,vscode)](https://skillicons.dev)
 
 **Hardware:** ESP32 WROOM-32 (Wemos D1 R32), MPU-6050, MFRC522 RFID, Sharp IR szenzorok, L298N motor driver  
-**Software:** PlatformIO, Arduino framework, AsyncWebServer, ArduinoJson, PID szabályozás, Kalman-szűrés
+**Software:** PlatformIO, Arduino framework, ESP32VariableTuner, ESPAsyncWebServer, AsyncTCP, ArduinoJson, PID szabalyzas, Kalman-szures
 
 ---
 
-## Projekt célja
+## Projekt celja
 
-A Jerry 3.0 egy kompakt **16×16 cm-es autonóm robot**, amely falkövetési algoritmusok, RFID-alapú navigáció és giroszkóp-asszisztált fordulók segítségével navigál és old meg labirintusokat. A robot az ESP32 **240 MHz-es dual-core processzorát** és beépített WiFi-jét használja a következőkhöz:
+A Jerry 3.0 egy kompakt **16x16 cm-es autonóm robot**, amely falkovetesi algoritmusok, RFID-alapu navigacio es giroszkop-asszisztalt fordulok segitsegevel navigal es old meg labirintusokat. A robot az ESP32 **240 MHz-es dual-core processzorat** es beepitett WiFi-jat hasznalja a kovetkezokhoz:
 
-- **Valós idejű web interface** élő szenzor-monitorozáshoz és PID hangoláshoz WiFi-n keresztül (SoftAP mód)
-- **Kalman-szűrt IR szenzorok** pontos faltávolság-méréshez
-- **RFID navigáció** irányított útmutatáshoz labirintus tag-ek használatával
-- **Giroszkóp-asszisztált mozgásvezérlés** precíz 90°-os fordulókhoz
-- **Adaptív falkövetés**, amely középre igazítja a robotot két fal között, vagy egyetlen falat követ
+- **Live variable tuning** PID es mozgasi ertekekhez ESP32VariableTuner-rel
+- **Kalman-szurt IR szenzorok** pontos faltavolsag-mereshez
+- **RFID navigacio** iranyitott utmutatashoz labirintus tag-ek hasznalataval
+- **Giroszkop-asszisztalt mozgasvezles** preciz 90 fokos fordulokhoz
+- **Adaptiv falkovetes**, amely kozepre igazitja a robotot ket fal kozott, vagy egyetlen falat kovet
+- **Modularis firmware**, amely audio, motion, RFID, sensor es tuner modulokra van bontva
 
-Ez a projekt jelentős evolúciót jelent korábbi Arduino-alapú terveinkhez képest, az ESP32 dual-core architektúrája lehetővé teszi a párhuzamos szenzorfeldolgozást és web kommunikációt teljesítményvesztés nélkül.
+Ez a projekt jelentosen valtozott a korabbi Arduino-alapu verziohoz kepest. A regi egyfajos, egyedi web interface helyett most ESP32VariableTuner-t hasznalunk, es a kodot kulon fajlokba rendeztuk a jobb karbantarthatosag erdekeben.
 
 ---
 
-## Kezdő lépések
+## Kezdo lepesek
 
-### Előfeltételek
+### Elofeltetelek
 
-- [PlatformIO IDE](https://platformio.org/) (VS Code extension ajánlott)
+- [PlatformIO IDE](https://platformio.org/) (VS Code extension ajanlott)
 - ESP32 board (Wemos D1 R32 vagy kompatibilis)
-- USB kábel programozáshoz
+- USB kabel programozashoz
 
-### Telepítés
+### Telepites
 
-1. **Repository klónozása:**
+1. **Repository klónozasa:**
    ```bash
    git clone https://github.com/szczukabendeguz/Jerry3_ESP32_MazeSolvingRobot.git
    cd Jerry3_ESP32_MazeSolvingRobot
    ```
 
-2. **Megnyitás PlatformIO-ban:**
-   - Nyisd meg a projekt mappát VS Code-ban telepített PlatformIO extension-nel
-   - A PlatformIO automatikusan telepíti a `platformio.ini`-ben felsorolt függőségeket
+2. **Megnyitas PlatformIO-ban:**
+   - Nyisd meg a projekt mappat VS Code-ban telepitett PlatformIO extension-nel
+   - A PlatformIO automatikusan telepiti a `platformio.ini`-ben felsorolt fuggosegeket
 
-3. **Feltöltés ESP32-re:**
+3. **Feltoltes ESP32-re:**
    ```bash
    pio run --target upload
    ```
 
-4. **Serial output monitorozása:**
+4. **Serial output monitorozasa:**
    ```bash
    pio device monitor
    ```
 
-### Csatlakozás a web interface-hez
+### Csatlakozas a tuning interface-hez
 
-1. Feltöltés után az ESP32 létrehoz egy WiFi access point-ot (SoftAP mód)
-2. Csatlakozz a WiFi hálózathoz: az **SSID** és jelszó megjelenik a serial monitorban
-3. Nyiss meg egy böngészőt és navigálj a megjelenített IP címre (általában `192.168.4.1`)
-4. Használd a web interface-t a következőkhöz:
-   - Élő szenzor adatok megtekintése (IR távolságok, giroszkóp szögek)
-   - PID paraméterek valós idejű hangolása
-   - Profilok közötti váltás (sprint mód, precíziós mód)
-   - Robot indítása/leállítása
-
----
-
-## Architektúra
-
-### Fő komponensek
-
-- **Szenzor feldolgozás**  
-  3 Sharp IR távolságszenzor (elülső, bal, jobb) olvasása és Kalman-szűrés alkalmazása a zaj csökkentésére és stabilitás javítására.
-
-- **PID szabályozás**  
-  Falkövetési logika implementálása: középre igazítja a robotot, ha mindkét oldalon fal van, vagy állandó távolságot tart egy faltól.
-
-- **RFID navigáció**  
-  MFRC522 modul (SPI) olvassa a labirintusban elhelyezett irányító tag-eket, navigációs utasításokat adva (előre, balra, jobbra, stop, start, zsákutca).
-
-- **Mozgásvezérlés**  
-  Két DC motor L298N driver-rel tank-szerű mozgást biztosít. Az MPU-6050 giroszkóp méri a forgást fordulók során a pontos 90°-os mozgásokhoz.
-
-- **Web interface**  
-  Az ESP32 beépített AsyncWebServer-e valós idejű dashboard-ot szolgáltat monitorozáshoz és hangoláshoz újraprogramozás nélkül.
-
-### Falkövetési algoritmus
-
-Az adaptív falkövetési logika három forgatókönyvet kezel:
-
-- **Mindkét fal észlelve:** PID szabályozással középre igazítja a robotot a falak között
-- **Egyetlen fal észlelve:** Beállított távolságot tart az észlelt faltól
-- **Nincs fal észlelve:** Giroszkóp adatokra támaszkodik az irány megtartásához
+1. Feltoltes utan az ESP32 letrehoz egy WiFi access point-ot (SoftAP mod)
+2. Csatlakozz a WiFi halozathoz: az **SSID** es jelszo megjelenik a serial monitorban
+3. Nyiss meg egy bongeszot es navigalj a megjelenitett IP cimre (altalaban `192.168.4.1`)
+4. Hasznald az ESP32VariableTuner UI-t a kovetkezokhoz:
+   - Live variable ertekek megtekintese
+   - PID parameterek valos ideju hangolasa
+   - Mozgasi limitek es falkovetesi kuszobok allitasa
+   - Telemetria figyelese futas kozben
 
 ---
 
-## Environment variable-ök
+## Architektura
 
-Nincsenek szükséges environment variable-ök. A konfiguráció a következőkön keresztül történik:
+### Fobb komponensek
 
-- **PID paraméterek:** Web interface-en vagy a `src/main.cpp`-ben hangolhatók
-- **Motor sebességek:** A `src/main.cpp`-ben definiálva (min/max sebességek, fordulási sebességek)
-- **Szenzor kalibráció:** IR szenzor modellek és Kalman filter paraméterek a `src/main.cpp`-ben
-- **WiFi hitelesítő adatok:** SoftAP SSID/jelszó a `src/pid_webinterface.cpp`-ben konfigurálva
+- **Szenzor feldolgozas**  
+  3 Sharp IR tavolsagszenzor (elso, bal, jobb) olvasasa es Kalman-szures alkalmazasa a zaj csokkentesere es stabilitas javitasara.
+
+- **PID szabalyzas**  
+  Falkovetesi logika: kozepre igazitja a robotot, ha mindket oldalon fal van, vagy allando tavolsagot tart egy faltol.
+
+- **RFID navigacio**  
+  MFRC522 modul (SPI) olvassa a labirintusban elhelyezett iranyito tag-eket, navigacios utasitasokat adva (elore, balra, jobbra, stop, start, zsakuutca).
+
+- **Mozgasvezles**  
+  Ket DC motor L298N driver-rel tank-szeru mozgast biztosit. Az MPU-6050 giroszkop meri a forgast fordulok soran a pontos 90 fokos mozgashoz.
+
+- **Live tuning interface**  
+  Az ESP32VariableTuner adja a jelenlegi tuning dashboard-ot, es a regi custom web szervert valtja le.
+
+### Falkovetesi algoritmus
+
+Az adaptiv falkovetesi logika harom forgatokonyvet kezel:
+
+- **Mindket fal eszlelve:** PID szabalyzassal kozepre igazitja a robotot a falak kozott
+- **Egyetlen fal eszlelve:** Beallitott tavolsagot tart az eszlelt faltol
+- **Nincs fal eszlelve:** Giroszkop adatokra tamaszkodik az irany megtartasahoz
 
 ---
 
-## Tesztelés
+## Environment variable-ok
 
-A projekt tartalmaz egy web-alapú teszt interface-t:
+Nincsenek szukseges environment variable-ok. A konfiguracio a kovetkezokon keresztul tortenik:
+
+- **PID parameterek:** ESP32VariableTuner-rel vagy a `src/main.cpp`-ben allithatok
+- **Motor sebessegek:** A `src/main.cpp`-ben definialva, a motion modul hasznalja oket
+- **Szenzor kalibracio:** IR szenzor modellek es Kalman filter parameterek a `src/sensors.cpp`-ben
+- **WiFi hitelesito adatok:** SoftAP SSID/jelszo a `src/main.cpp`-ben konfiguralt
+
+---
+
+## Teszteles
+
+A projekt tartalmaz egy tuning es teszt interface-t az ESP32VariableTuner-en keresztul:
 
 ```bash
-# Nyisd meg a test/test.html fájlt böngészőben, miután csatlakoztál a robot WiFi-jéhez
-# Ez egy vizuális dashboard-ot biztosít szenzor adatokhoz és vezérléshez
+# Csatlakozz a robot WiFi halozatahoz
+# Nyisd meg a tuning UI-t egy bongeszoben az ESP32 IP cimen
 ```
 
-Hardware teszteléshez:
+Hardware teszteleshez:
 
 1. Helyezd a robotot egy teszt labirintusba
-2. Csatlakozz a WiFi interface-hez
-3. Monitorozd a szenzor leolvasásokat és állítsd be a PID paramétereket
-4. Használd a web interface-t a labirintus-megoldó rutin indításához
+2. Csatlakozz a WiFi tuning interface-hez
+3. Monitorozd a szenzor leolvasasokat es allitsd be a PID parametereket
+4. Hasznald az live tuner-t a labirintus-megoldo rutin inditasahoz
+
+---
+
+## Amit megtanultunk
+
+- **ESP32 vs Arduino:** Az ESP32-re valo atallas sokkal nagyobb teljesitmenyt adott, es lehetove tette a komplexebb algoritmusokat es a live tuningot
+- **Modularis architektura:** A kod kulon fajlokra bontasa sokkal konnyebbe tette a karbantartast es a bovitest
+- **Kalman-szures:** Fontos a stabil IR szenzorleolvasashoz zajos kornyezetben
+- **Live tuning:** Az ESP32VariableTuner sok idot sporolt meg a teszteles es a versenyfelkeszites soran
