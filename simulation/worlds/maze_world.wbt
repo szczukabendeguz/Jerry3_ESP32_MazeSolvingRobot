@@ -1,0 +1,519 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "../protos/Jerry3.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
+
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.5193832314362108 -0.5041445429870948 -0.6899850278659769 4.3684682468567
+  position 2.106607842530582 -1.7944366619900867 6.022312186826713
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  translation 3 0 0
+  appearance Parquetry {
+    type "light strip"
+  }
+}
+Solid {
+  translation 0.1425 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_0"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 0.1425 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_0"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 0.4275 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_1"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 0.4275 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_1"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 0.7125 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_2"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 0.7125 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_2"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 0.9975 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_3"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 1.2825 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_4"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 1.2825 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_4"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 1.5675 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_5"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 1.8525 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_6"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 1.8525 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_6"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 2.7075 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_9"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 2.7075 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_9"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 2.9925 0.285 0.075
+  rotation 0 0 1 1.5708
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "PerpLeft_10"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 2.9925 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_10"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 3.2775 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_11"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 3.2775 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_11"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 3.5625 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_12"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 3.5625 -0.285 0.075
+  rotation 0 0 1 1.5708
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "PerpRight_12"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 3.8475 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_13"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 3.8475 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_13"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 4.1325 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_14"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 4.1325 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_14"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 4.4175 0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "LeftWall_15"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 4.4175 -0.1425 0.075
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "RightWall_15"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation 4.7025 0 0.075
+  rotation 0 0 1 1.5708
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "EndWall_16"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+Solid {
+  translation -0.1 0 0.075
+  rotation 0 0 1 1.5708
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+      }
+      geometry Box {
+        size 0.285 0.015 0.15
+      }
+    }
+  ]
+  name "StartWall"
+  boundingObject Box {
+    size 0.285 0.015 0.15
+  }
+}
+DEF Jerry3 Jerry3 {
+  translation 0 0 0.035
+}
+Robot {
+  children [
+    Emitter {
+    }
+    Receiver {
+    }
+  ]
+  name "supervisor"
+  controller "supervisor_ga"
+  supervisor TRUE
+}

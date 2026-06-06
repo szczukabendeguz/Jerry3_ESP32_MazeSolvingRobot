@@ -1,0 +1,284 @@
+#VRML_SIM R2023b utf8
+
+PROTO Jerry3 [
+  field SFVec3f    translation  0 0 0.0325
+  field SFRotation rotation     0 0 1 0
+  field SFString   name         "Jerry3"
+  field SFString   controller   "robot_controller"
+  field MFString   controllerArgs []
+  field SFString   customData   ""
+  field SFBool     supervisor   FALSE
+  field SFBool     synchronization TRUE
+  field SFString   window       "<generic>"
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    name IS name
+    controller IS controller
+    controllerArgs IS controllerArgs
+    customData IS customData
+    supervisor IS supervisor
+    synchronization IS synchronization
+    window IS window
+    
+    children [
+      # Main body bounding box
+      Pose {
+        translation 0 0 -0.0375
+        rotation 0 0 1 1.5708
+        children [
+          Transform {
+            scale 0.001 0.001 0.001
+            children [
+              Shape {
+                castShadows FALSE
+                appearance PBRAppearance {
+                  baseColor 1 1 1
+                  roughness 0.9
+                  metalness 0.1
+                }
+                geometry Mesh {
+                  url [
+                    "../meshes/tinker.obj"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+      # Left Wheel
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0 1 0
+          anchor 0 0.068 0
+        }
+        device [
+          RotationalMotor {
+            name "left_motor"
+            maxVelocity 21.0
+            maxTorque 1.5
+          }
+        ]
+        endPoint Solid {
+          name "left_wheel"
+          translation 0 0.068 0
+          rotation 1 0 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.1 0.1 0.1
+                roughness 0.8
+              }
+              geometry Cylinder {
+                radius 0.03775
+                height 0.02
+              }
+            }
+          ]
+          boundingObject Cylinder {
+            radius 0.03775
+            height 0.02
+          }
+          physics Physics {
+            density -1
+            mass 0.1
+          }
+        }
+      }
+      # Right Wheel
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0 1 0
+          anchor 0 -0.068 0
+        }
+        device [
+          RotationalMotor {
+            name "right_motor"
+            maxVelocity 21.0
+            maxTorque 1.5
+          }
+        ]
+        endPoint Solid {
+          name "right_wheel"
+          translation 0 -0.068 0
+          rotation 1 0 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.1 0.1 0.1
+                roughness 0.8
+              }
+              geometry Cylinder {
+                radius 0.03775
+                height 0.02
+              }
+            }
+          ]
+          boundingObject Cylinder {
+            radius 0.03775
+            height 0.02
+          }
+          physics Physics {
+            density -1
+            mass 0.1
+          }
+        }
+      }
+      
+      # Front Sensor (GP2Y0A41SK0F: 4-30cm)
+      DistanceSensor {
+        translation 0.054 0 0.04
+        rotation 0 0 1 0
+        name "sensor_front"
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.8 0.1 0.1
+              roughness 0.5
+            }
+            geometry Box {
+              size 0.01 0.02 0.01
+            }
+          }
+        ]
+        lookupTable [
+          0.0 4095 0
+          0.05 2000 0
+          0.10 1200 0
+          0.15 750 0
+          0.20 500 0
+          0.25 375 0
+          0.30 300 0
+          0.35 200 0
+          0.40 150 0
+        ]
+        type "infra-red"
+      }
+      
+      # Left Sensor (GP2Y0A51SK0F: 2-15cm)
+      DistanceSensor {
+        translation 0.054 0.0425 0.04
+        rotation 0 0 1 1.178097  # 67.5 degrees in radians
+        name "sensor_left"
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.8 0.1 0.1
+              roughness 0.5
+            }
+            geometry Box {
+              size 0.01 0.01 0.02
+            }
+          }
+        ]
+        lookupTable [
+          0.0 4095 0
+          0.010 2500 0
+          0.025 1500 0
+          0.050 880 0
+          0.075 600 0
+          0.100 450 0
+          0.125 405 0
+          0.150 370 0
+          0.175 330 0
+          0.200 300 0
+          0.350 150 0
+          0.450 100 0
+        ]
+        type "infra-red"
+      }
+      
+      # Right Sensor (GP2Y0A51SK0F: 2-15cm)
+      DistanceSensor {
+        translation 0.054 -0.0425 0.04
+        rotation 0 0 1 -1.178097  # -67.5 degrees in radians
+        name "sensor_right"
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.8 0.1 0.1
+              roughness 0.5
+            }
+            geometry Box {
+              size 0.01 0.01 0.02
+            }
+          }
+        ]
+        lookupTable [
+          0.0 4095 0
+          0.010 2500 0
+          0.025 1500 0
+          0.050 880 0
+          0.075 600 0
+          0.100 450 0
+          0.125 405 0
+          0.150 370 0
+          0.175 330 0
+          0.200 300 0
+          0.350 150 0
+          0.450 100 0
+        ]
+        type "infra-red"
+      }
+      
+      # IMU (Gyro Z)
+      InertialUnit {
+        name "imu"
+      }
+      
+      # Receiver for GA parameters
+      Receiver {
+        name "receiver"
+      }
+      
+      # Emitter to report fitness
+      Emitter {
+        name "emitter"
+      }
+      # Caster Wheel (Back)
+      BallJoint {
+        jointParameters BallJointParameters {
+          anchor -0.07 0 -0.02775
+        }
+        endPoint Solid {
+          translation -0.07 0 -0.02775
+          name "caster_wheel"
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.2 0.2 0.2
+                roughness 0.5
+              }
+              geometry Sphere {
+                radius 0.01
+              }
+            }
+          ]
+          boundingObject Sphere {
+            radius 0.01
+          }
+          physics Physics {
+            density -1
+            mass 0.05
+          }
+        }
+      }
+    ]
+    boundingObject Pose {
+      translation 0 0 0.05
+      children [
+        Box {
+          size 0.16 0.16 0.1
+        }
+      ]
+    }
+    physics Physics {
+      density -1
+      mass 2.0
+      centerOfMass [ -0.035 0 0.02 ]
+    }
+  }
+}
